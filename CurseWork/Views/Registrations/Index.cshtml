@@ -1,0 +1,93 @@
+﻿@model X.PagedList.IPagedList<CurseWork.Models.Registration>
+@using X.PagedList.Mvc.Core;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Реєстрації";
+}
+
+<h1>Реєстрації</h1>
+
+<!-- Кнопка для відкриття модального вікна -->
+<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#searchModal">
+    Пошук
+</button>
+
+<!-- Модальне вікно -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">Пошук реєстрацій</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="searchForm" asp-action="Index" method="get">
+                    <div class="form-group mb-2">
+                        <label for="searchTicketId">ID квитка</label>
+                        <input type="number" id="searchTicketId" name="searchTicketId" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="searchStatus">Статус</label>
+                        <input type="text" id="searchStatus" name="searchStatus" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="searchTime">Час</label>
+                        <input type="date" id="searchTime" name="searchTime" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Шукати</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p>
+    <a asp-action="Create">Додати нову реєстрацію</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().TicketId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Time)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Time)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.RegistrationId">Редагувати</a> |
+                    <a asp-action="Details" asp-route-id="@item.RegistrationId">Деталі</a> |
+                    <a asp-action="Delete" asp-route-id="@item.RegistrationId">Видалити</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="d-flex justify-content-center">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+{
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    ActiveLiElementClass = "active"
+})
+</div>

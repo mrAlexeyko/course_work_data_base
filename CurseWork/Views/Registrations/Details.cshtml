@@ -1,0 +1,36 @@
+﻿@model CurseWork.Models.Registration
+
+@{
+    ViewData["Title"] = "Деталі реєстрації";
+}
+
+<h1>Деталі реєстрації</h1>
+
+<div>
+    <h4>Реєстрація</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TicketId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TicketId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Time)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Time)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.RegistrationId">Редагувати</a> |
+    <a asp-action="Index">Назад до списку</a>
+</div>

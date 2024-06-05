@@ -1,0 +1,113 @@
+﻿@model X.PagedList.IPagedList<CurseWork.Models.Passenger>
+@using X.PagedList.Mvc.Core;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Пасажири";
+}
+
+<h1>Пасажири</h1>
+
+<!-- Кнопка для відкриття модального вікна -->
+<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#searchModal">
+    Пошук
+</button>
+
+<!-- Модальне вікно -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">Пошук пасажирів</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="searchForm" asp-action="Index" method="get">
+                    <div class="form-group mb-2">
+                        <label for="searchFirstName">Ім'я</label>
+                        <input type="text" id="searchFirstName" name="searchFirstName" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="searchLastName">Прізвище</label>
+                        <input type="text" id="searchLastName" name="searchLastName" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="searchPassportNumber">Номер паспорта</label>
+                        <input type="text" id="searchPassportNumber" name="searchPassportNumber" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="searchInSearch">В розшуку</label>
+                        <select id="searchInSearch" name="searchInSearch" class="form-control">
+                            <option value="">Всі</option>
+                            <option value="true">Так</option>
+                            <option value="false">Ні</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Шукати</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p>
+    <a asp-action="Create">Додати нового пасажира</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().PassportNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().BirthDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().InSearch)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PassportNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InSearch)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.PassengerId">Редагувати</a> |
+                    <a asp-action="Details" asp-route-id="@item.PassengerId">Деталі</a> |
+                    <a asp-action="Delete" asp-route-id="@item.PassengerId">Видалити</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="d-flex justify-content-center">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+{
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    ActiveLiElementClass = "active"
+})
+</div>

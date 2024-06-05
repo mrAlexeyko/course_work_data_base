@@ -1,0 +1,99 @@
+﻿@model X.PagedList.IPagedList<CurseWork.Models.Flight>
+@using X.PagedList.Mvc.Core;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Рейси";
+}
+
+<h1>Рейси</h1>
+
+<!-- Кнопка для відкриття модального вікна -->
+<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#searchModal">
+    Пошук
+</button>
+
+<!-- Модальне вікно -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">Пошук рейсів</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="searchForm" asp-action="Index" method="get">
+                    <div class="form-group mb-2">
+                        <label for="searchRoute">Маршрут</label>
+                        <input type="text" id="searchRoute" name="searchRoute" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="searchAircraft">Літак</label>
+                        <input type="text" id="searchAircraft" name="searchAircraft" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="searchDate">Дата</label>
+                        <input type="date" id="searchDate" name="searchDate" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Шукати</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p>
+    <a asp-action="Create">Додати новий рейс</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Route.DepartureAirport)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Route.ArrivalAirport)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Aircraft.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Date)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Route.DepartureAirport)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Route.ArrivalAirport)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Aircraft.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.FlightId">Редагувати</a> |
+                    <a asp-action="Details" asp-route-id="@item.FlightId">Деталі</a> |
+                    <a asp-action="Delete" asp-route-id="@item.FlightId">Видалити</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="d-flex justify-content-center">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+{
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    ActiveLiElementClass = "active"
+})
+</div>

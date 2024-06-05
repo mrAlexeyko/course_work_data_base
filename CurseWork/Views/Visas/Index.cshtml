@@ -1,0 +1,85 @@
+﻿@model X.PagedList.IPagedList<CurseWork.Models.Visa>
+@using X.PagedList.Mvc.Core;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Візи";
+}
+
+<h1>Візи</h1>
+
+<!-- Кнопка для відкриття модального вікна -->
+<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#searchModal">
+    Пошук
+</button>
+
+<!-- Модальне вікно -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">Пошук віз</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="searchForm" asp-action="Index" method="get">
+                    <div class="form-group mb-2">
+                        <label for="searchCountry">Країна</label>
+                        <input type="text" id="searchCountry" name="searchCountry" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Шукати</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p>
+    <a asp-action="Create">Додати нову візу</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().PassengerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().ExpiryDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PassengerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExpiryDate)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.VisaId">Редагувати</a> |
+                    <a asp-action="Details" asp-route-id="@item.VisaId">Деталі</a> |
+                    <a asp-action="Delete" asp-route-id="@item.VisaId">Видалити</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="d-flex justify-content-center">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+{
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    ActiveLiElementClass = "active"
+})
+</div>

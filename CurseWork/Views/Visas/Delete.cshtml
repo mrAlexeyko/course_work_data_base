@@ -1,0 +1,39 @@
+﻿@model CurseWork.Models.Visa
+
+@{
+    ViewData["Title"] = "Видалити візу";
+}
+
+<h1>Видалити візу</h1>
+
+<h3>Ви впевнені, що хочете видалити цю візу?</h3>
+<div>
+    <h4>Віза</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PassengerId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PassengerId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Country)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ExpiryDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExpiryDate)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="VisaId" />
+        <input type="submit" value="Видалити" class="btn btn-danger" /> |
+        <a asp-action="Index">Назад до списку</a>
+    </form>
+</div>

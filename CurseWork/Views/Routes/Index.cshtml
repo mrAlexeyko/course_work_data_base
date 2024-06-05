@@ -1,0 +1,105 @@
+﻿@model X.PagedList.IPagedList<CurseWork.Models.Route>
+@using X.PagedList.Mvc.Core;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Маршрути";
+}
+
+<h1>Маршрути</h1>
+
+<!-- Кнопка для відкриття модального вікна -->
+<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#searchModal">
+    Пошук
+</button>
+
+<!-- Модальне вікно -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">Пошук маршрутів</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="searchForm" asp-action="Index" method="get">
+                    <div class="form-group mb-2">
+                        <label for="searchDepartureAirport">Аеропорт відправлення</label>
+                        <input type="text" id="searchDepartureAirport" name="searchDepartureAirport" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="searchArrivalAirport">Аеропорт прибуття</label>
+                        <input type="text" id="searchArrivalAirport" name="searchArrivalAirport" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="searchTerminalType">Тип терміналу</label>
+                        <input type="text" id="searchTerminalType" name="searchTerminalType" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Шукати</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p>
+    <a asp-action="Create">Додати новий маршрут</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().DepartureTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().ArrivalTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().DepartureAirport)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().ArrivalAirport)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().TerminalType)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DepartureTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArrivalTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DepartureAirport)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArrivalAirport)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TerminalType)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.RouteId">Редагувати</a> |
+                    <a asp-action="Details" asp-route-id="@item.RouteId">Деталі</a> |
+                    <a asp-action="Delete" asp-route-id="@item.RouteId">Видалити</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="d-flex justify-content-center">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+{
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    ActiveLiElementClass = "active"
+})
+</div>
